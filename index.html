@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>d3 | reusable heatmap calendar</title>
+    <meta name="author" content="Sundar Singh | eesur.com" />
+
+    <link rel="stylesheet" href="main.css" />
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"
+      charset="utf-8"
+    ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+  </head>
+  <body>
+    <article>
+      <header>
+        <span id="info">info</span>
+      </header>
+      <div class="container">
+        <section id="heatmap"></section>
+        <div class="heat-gradient">
+          <p>-1500</p>
+          <p>-1000</p>
+          <p>-500</p>
+          <p>-0</p>
+        </div>
+      </div>
+    </article>
+
+    <script>
+      d3.eesur = {}; //namespace
+    </script>
+    <script src="d3_code_heatmap_cal.js"></script>
+    <script>
+      // *****************************************
+      // render chart
+      // *****************************************
+      (function () {
+        "use strict";
+
+        var nestedData;
+        var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+        // create chart
+        var heatChart = d3.eesur
+          .heatmap()
+          .colourRangeStart("#fae9e6")
+          .colourRangeEnd("#ff5e6f")
+          .height(500)
+          .startYear("2019")
+          .endYear("2022")
+          .on("_hover", function (d, i) {
+            var f = d3.time.format("%B %d, %Y");
+            d3.select("#info").text(function () {
+              return "date: " + f(d) + " | value: " + nestedData[d];
+            });
+          });
+
+        // apply after nesting data
+        d3.json("heatmap_data.json", function (error, data) {
+          if (error) return console.warn(error);
+
+          nestedData = d3
+            .nest()
+            .key(function (d) {
+              return parseDate(d.date.split(" ")[0]);
+            })
+            .rollup(function (n) {
+              return d3.sum(n, function (d) {
+                return d.amount; // key
+              });
+            })
+            .map(data);
+
+          // console.log(nestedData);
+
+          // render chart
+          d3.select("#heatmap").datum(nestedData).call(heatChart);
+        });
+      })();
+
+      d3.select(self.frameElement).style("height", "900px");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,76 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:400,600);
+body {
+    font-family: "Source Code Pro", Consolas, monaco, monospace;
+    line-height: 1.5;
+  font-weight: 400;
+}
+.day {
+  fill: #fff;
+  stroke: black;
+  stroke-width: .5px;
+}
+.month {
+  fill: none;
+  stroke: white;
+  stroke-width: 1px;
+}
+.year-title {
+  font-size: 18px;
+  letter-spacing: 10px;
+  fill: #00B0DD; 
+}
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 33px;
+  width: 100%;
+  background: #ffff00;
+  opacity: 0.9;
+  z-index: 22;
+  background: #00B0DD;
+  color: white;
+}
+#heatmap {
+  padding-top: 30px;
+  text-align: center;
+}
+svg text { 
+  font-size: 11px;
+  text-transform: uppercase;
+  fill: #00B0DD;
+}
+
+/* ==== custom ======= */
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heat-gradient {
+  margin-left: 50px;
+  background: linear-gradient(#ff5e6f, #fae9e6);
+  width: 30px;
+  height: 420px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.heat-gradient > p {
+  margin: 0;
+  transform: translate(32px, 11px);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#info {
+  font-size: 15px;
+}
